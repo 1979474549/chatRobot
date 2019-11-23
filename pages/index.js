@@ -1,3 +1,25 @@
+init();
+function init () {
+    let btn = document.getElementsByClassName('subBtn')[0];
+    let inp = document.getElementsByClassName('input')[0];
+    let val = null;
+    inp.oninput = function (e) {
+        val = e.target.value;
+    }
+
+    inp.onkeydown = function (e) {
+        if(e.key === 'Enter') {
+            console.log(val);
+            send(val);
+        } else {
+            return;
+        }
+    };
+    btn.onclick = function () {
+        send(val);
+        val = null;
+    }
+}
 function ajax (method, url, cb) {
     let xhr = null;
     if(window.XMLHttpRequest) {
@@ -13,34 +35,33 @@ function ajax (method, url, cb) {
     xhr.open(method, url, true);
     xhr.send();
 }
-
-let btn = document.getElementsByClassName('subBtn')[0];
-window.onkeydown = function (e) {
-    if(e.key === 'Enter') {
-        send();
-    } else {
-        return;
-    }
-}
-btn.onclick = send;
-function send () {
-    let inp = document.getElementsByClassName('input')[0];
+function send (val) {
+    console.log(val);
+    let chatBox = document.getElementsByClassName('chatBox')[0];
     let content = document.getElementsByClassName('content')[0];
-    if(inp.value.trim() === '') {
+    let inp = document.getElementsByClassName('input')[0];
+    if(val === '' || val === undefined || val === null) {
         return;
     }
-    let p = document.createElement('p');
-    p.innerHTML = '我：' + inp.value;
-    content.appendChild(p);
+    let p = document.createElement('span');
+    p.innerHTML = '我：' + val;
+    p.className = 'me';
+    chatBox.appendChild(p);
     inp.value = '';
-    ajax('get', 'http://127.0.0.1:12306/query?text=' + inp.value, function (data) {
-        let tulin = document.createElement('p');
+    ajax('get', 'http://127.0.0.1:12142/query?text=' + val, function (data) {
+
+        let tulin = document.createElement('span');
+        let hidden = document.getElementsByClassName('hidden')[0];
+        content.scrollTop = content.scrollHeight;
+        // hidden.scrollIntoView(false);
+        tulin.className = 'tulin'
         tulin.innerHTML = "图灵：" + data;
-        content.appendChild(tulin);
+        chatBox.appendChild(tulin);
         var utterThis = new window.SpeechSynthesisUtterance(data);
         window.speechSynthesis.speak(utterThis);
     })
 }
+
 
 
 

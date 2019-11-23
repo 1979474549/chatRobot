@@ -29,8 +29,13 @@ app.get('/query', function (request, response) {
         },
         body: JSON.stringify(data)
     }, function (err, rep, body) {
+        let data = {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET",
+            "Access-Control-Allow-Headers": "x-requested-with, content-type"
+        }
         if(!err) {
-            response.writeHead(200);
+            response.writeHead(200, data);
             response.write(JSON.parse(body).results[0].values.text);
             response.end();
         }
