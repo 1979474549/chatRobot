@@ -3,7 +3,7 @@ let url = require('url');
 let req = require('request');
 
 let app = new express();
-app.use(express.static('./pages'));
+app.use(express.static('./dist'));
 app.listen(12142, function () {
     console.log('连接成功 正在监听12142端口');
 });

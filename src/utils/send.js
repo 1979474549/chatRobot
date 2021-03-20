@@ -1,41 +1,5 @@
-init();
-function init () {
-    let btn = document.getElementsByClassName('subBtn')[0];
-    let inp = document.getElementsByClassName('input')[0];
-    let val = null;
-    inp.oninput = function (e) {
-        val = e.target.value;
-    }
-
-    inp.onkeydown = function (e) {
-        if(e.key === 'Enter') {
-            console.log(val);
-            send(val);
-        } else {
-            return;
-        }
-    };
-    btn.onclick = function () {
-        send(val);
-        val = null;
-    }
-}
-function ajax (method, url, cb) {
-    let xhr = null;
-    if(window.XMLHttpRequest) {
-        xhr = new XMLHttpRequest();
-    } else {
-        xhr = ActiveXObject('Microsoft.XMLHTTP');
-    }
-    xhr.onreadystatechange = function () {
-        if(xhr.readyState === 4 && xhr.status === 200) {
-            cb(xhr.responseText);
-        }
-    }
-    xhr.open(method, url, true);
-    xhr.send();
-}
-function send (val) {
+import {ajax} from './ajax.js';
+export function send (val) {
     console.log(val);
     let chatBox = document.getElementsByClassName('chatBox')[0];
     let content = document.getElementsByClassName('content')[0];
@@ -61,9 +25,3 @@ function send (val) {
         window.speechSynthesis.speak(utterThis);
     })
 }
-
-
-
-
-
-
